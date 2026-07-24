@@ -1,21 +1,23 @@
 name: Temporary OpenAlex statistics bibliography build
 
 on:
-  push:
+  pull_request:
     branches:
-      - tmp-openalex-statistics-20260723
+      - master
 
 permissions:
   contents: write
 
 jobs:
   build:
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - name: Check out temporary branch
         uses: actions/checkout@v4
         with:
+          ref: tmp-openalex-statistics-20260723
           fetch-depth: 0
 
       - name: Set up Python
@@ -201,4 +203,4 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add statistics_top_1000_openalex.csv statistics_top_1000_methodology.json statistics_top_1000_ready.txt
           git commit -m "Generate temporary OpenAlex statistics bibliography"
-          git push origin "HEAD:${GITHUB_REF_NAME}"
+          git push origin "HEAD:tmp-openalex-statistics-20260723"
